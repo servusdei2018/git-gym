@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+DIR="/tmp/gym-$$"
+DRILL="$1"
+
+if [ -z "$DRILL" ] || [ ! -d "$DRILL" ]; then
+	echo "usage: run drill-dir" >&2
+	exit 1
+fi
+
+trap 'rm -rf "$DIR"' EXIT
+
+mkdir -p "$DIR"
+"./$DRILL/make" "$DIR"
+
+cat "$DRILL/doc"
+echo "--- working in $DIR ---"
+
+( cd "$DIR" && "$SHELL" )
+
+"./$DRILL/check" "$DIR"

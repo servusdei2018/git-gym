@@ -1,0 +1,9 @@
+Leave the dirty edits in 'repo/work.c' undisturbed.
+In 'repo', add a worktree at '../hotfix' bound to a new branch 'fix'.
+Inside 'hotfix', add 'fix.c' containing 'int f;' and commit it with the message 'fix'.
+Remove the 'hotfix' worktree and its administrative metadata when done.
+Exit the subshell.
+
+Tidbit: 'git worktree add -b <new-branch> <path>' attaches a fresh branch
+to a new directory. When finished, 'git worktree remove <path>' cleans
+both the directory and its administrative entry in '.git/worktrees'.

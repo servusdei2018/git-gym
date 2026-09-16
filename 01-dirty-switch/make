@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+git init -q -b main "$d"
+cd "$d"
+git config user.name "who"
+git config user.email "who@example.net"
+git config commit.gpgsign false
+echo "int x;" > base.c
+git add base.c
+git commit -qm "init"
+echo "int uncommitted;" > work.c

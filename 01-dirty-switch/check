@@ -1,0 +1,35 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+
+# work.c must survive with uncommitted edits
+if [ ! -f "$d/work.c" ]; then
+	echo "fail: repo/work.c was removed" >&2
+	exit 1
+fi
+if ! grep -q "uncommitted" "$d/work.c"; then
+	echo "fail: repo/work.c lost uncommitted edits" >&2
+	exit 1
+fi
+
+# branch 'fix' must contain fix.c
+if ! git -C "$d" rev-parse --verify -q refs/heads/fix >/dev/null; then
+	echo "fail: branch 'fix' not found" >&2
+	exit 1
+fi
+if ! git -C "$d" ls-tree -r refs/heads/fix | grep -q "fix.c"; then
+	echo "fail: fix.c not committed to branch 'fix'" >&2
+	exit 1
+fi
+
+# hotfix worktree and its metadata must be gone
+if [ -d "$1/hotfix" ]; then
+	echo "fail: directory 'hotfix' still exists" >&2
+	exit 1
+fi
+if [ -d "$d/.git/worktrees/hotfix" ]; then
+	echo "fail: worktree metadata 'hotfix' not removed" >&2
+	exit 1
+fi
+
+echo "ok"

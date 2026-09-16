@@ -1,0 +1,11 @@
+A branch is a movable reference to a commit object. A working tree
+is a directory of files checked out from the index. Switching branches
+in a dirty tree requires overwriting files on disk; Git refuses in order
+to preserve your edits.
+
+Stashing writes uncommitted changes into dangling commit objects. It is
+messy, easy to lose, and strips your work of its filesystem context.
+
+The clean solution is a second working tree. Each worktree maintains its
+own index and HEAD pointer, but shares the underlying object store and refs.
+Leave the dirty tree untouched and do the urgent work in a separate directory.
