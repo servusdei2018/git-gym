@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+root="$1/container"
+
+# worktree 'main' must exist with a gitdir pointer file
+if [ ! -d "$root/main" ]; then
+	echo "fail: worktree 'main' not found" >&2
+	exit 1
+fi
+if [ ! -f "$root/main/.git" ]; then
+	echo "fail: 'main/.git' is not a gitdir pointer file" >&2
+	exit 1
+fi
+if ! grep -q "^gitdir:" "$root/main/.git"; then
+	echo "fail: 'main/.git' missing gitdir reference" >&2
+	exit 1
+fi
+
+# 'feature' worktree must exist on branch 'feature'
+if [ ! -d "$root/feature" ]; then
+	echo "fail: worktree 'feature' not found" >&2
+	exit 1
+fi
+branch=$(git -C "$root/feature" symbolic-ref --short -q HEAD || true)
+if [ "$branch" != "feature" ]; then
+	echo "fail: worktree 'feature' is not on branch 'feature'" >&2
+	exit 1
+fi
+
+echo "ok"

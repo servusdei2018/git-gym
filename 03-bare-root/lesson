@@ -1,0 +1,16 @@
+A standard clone conflates the object database with a single working
+directory: the '.git' directory sits inside the root of your source files.
+
+A bare repository removes this confusion. It contains only objects,
+refs, and configuration—no checked-out files.
+
+By placing a bare repository in a hidden directory, the project root
+becomes a clean container for peer worktrees:
+    project/
+        .bare/
+        main/
+        feature/
+
+In a linked worktree, '.git' is not a directory; it is a one-line ASCII
+file pointing to the parent database:
+    gitdir: /path/to/project/.bare/worktrees/main

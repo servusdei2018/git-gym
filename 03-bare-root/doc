@@ -1,0 +1,8 @@
+Inspect the bare repository in 'container/.bare'.
+From '.bare', add a worktree at '../main' checking out branch 'main'.
+Add a second worktree at '../feature' on a new branch 'feature'.
+Verify that 'container/main/.git' is a pointer file rather than a directory.
+Exit the subshell.
+
+Tidbit: In a bare repository, 'git worktree add <path> <branch>' checks out
+an existing branch, while '-b <new-branch>' creates one.

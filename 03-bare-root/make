@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+root="$1/container"
+mkdir -p "$root"
+
+tmp=$(mktemp -d)
+git init -q -b main "$tmp"
+cd "$tmp"
+git config user.name "who"
+git config user.email "who@example.net"
+git config commit.gpgsign false
+echo "root" > root.txt
+git add root.txt
+git commit -qm "root"
+git clone -q --bare "$tmp" "$root/.bare"
+cd "$1"
+rm -rf "$tmp"
