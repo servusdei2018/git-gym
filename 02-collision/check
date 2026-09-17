@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+
+# locked-tree must no longer hold 'dev'
+active_in_locked=$(git -C "$1/locked-tree" symbolic-ref --short -q HEAD || true)
+if [ "$active_in_locked" = "dev" ]; then
+	echo "fail: branch 'dev' still locked in locked-tree" >&2
+	exit 1
+fi
+
+# 'patch' must exist on branch 'dev'
+if [ ! -d "$1/patch" ]; then
+	echo "fail: directory 'patch' not found" >&2
+	exit 1
+fi
+
+patch_branch=$(git -C "$1/patch" symbolic-ref --short -q HEAD || true)
+if [ "$patch_branch" != "dev" ]; then
+	echo "fail: worktree 'patch' is not on branch 'dev'" >&2
+	exit 1
+fi
+
+# a commit must have been made
+if ! git -C "$1/patch" log -1 --oneline | grep -q "patch"; then
+	echo "fail: change was not committed on 'patch'" >&2
+	exit 1
+fi
+
+echo "ok"

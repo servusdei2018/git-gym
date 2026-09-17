@@ -1,0 +1,9 @@
+Branch 'dev' is currently held by 'locked-tree'.
+Free branch 'dev' without deleting the 'locked-tree' directory.
+Check out 'dev' in a new worktree at '../patch'.
+Commit a change to 'patch/b.c' with the word 'patch' in the message.
+Exit the subshell.
+
+Tidbit: 'git worktree list' displays all active worktrees and their
+assigned branches. Detaching HEAD in the occupying tree frees the
+branch reference immediately.

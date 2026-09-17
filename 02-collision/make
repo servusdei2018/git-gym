@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+git init -q -b main "$d"
+cd "$d"
+git config user.name "who"
+git config user.email "who@example.net"
+git config commit.gpgsign false
+echo "int x;" > a.c
+git add a.c
+git commit -qm "init"
+git checkout -q -b dev
+echo "int y;" > b.c
+git add b.c
+git commit -qm "add y"
+
+# Spawn a sibling worktree holding dev
+git checkout -q main
+git worktree add -q "$1/locked-tree" dev

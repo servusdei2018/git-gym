@@ -1,0 +1,13 @@
+A branch cannot be checked out in two worktrees simultaneously. If Git
+permitted this, two independent indices would write competing updates
+to the same reference file, corrupting history.
+
+Attempting to check out an occupied branch yields:
+    fatal: 'dev' is already checked out at '/path/to/tree'
+
+The repository is a directed acyclic graph; branches are merely names
+for vertices. Multiple branches can point to the same vertex, but one
+branch name cannot belong to two working directories at once.
+
+To liberate a branch, either switch the occupant to another branch,
+detach its HEAD, or point a new branch name at the same commit.
