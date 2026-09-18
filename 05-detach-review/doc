@@ -1,0 +1,7 @@
+Inspect tags in 'repo' to locate 'v1.0'.
+Create a worktree at '../review' checked out at 'v1.0' with a detached HEAD.
+Confirm no local branch named 'review' was created in 'refs/heads/'.
+Exit the subshell.
+
+Tidbit: 'git worktree add --detach <path> <commit-ish>' populates a working
+tree directly from a commit or tag without allocating a branch ref.

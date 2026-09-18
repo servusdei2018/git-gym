@@ -1,0 +1,32 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+review="$1/review"
+
+# review directory must exist
+if [ ! -d "$review" ]; then
+	echo "fail: directory 'review' not found" >&2
+	exit 1
+fi
+
+# HEAD must be detached
+if git -C "$review" symbolic-ref -q HEAD >/dev/null 2>&1; then
+	echo "fail: worktree 'review' is on a branch, not detached" >&2
+	exit 1
+fi
+
+# HEAD must point to v1.0
+review_sha=$(git -C "$review" rev-parse HEAD)
+tag_sha=$(git -C "$d" rev-parse "v1.0^{commit}")
+if [ "$review_sha" != "$tag_sha" ]; then
+	echo "fail: worktree 'review' does not point to tag 'v1.0'" >&2
+	exit 1
+fi
+
+# no 'review' branch in refs/heads
+if git -C "$d" rev-parse --verify -q refs/heads/review >/dev/null; then
+	echo "fail: local branch 'review' was created in refs/heads/" >&2
+	exit 1
+fi
+
+echo "ok"

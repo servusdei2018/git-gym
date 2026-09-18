@@ -1,0 +1,13 @@
+Creating a named branch just to inspect an old commit is littering.
+Every branch creates a file in '.git/refs/heads/' that persists until
+someone remembers to delete it.
+
+A detached HEAD points directly to a commit object rather than through
+a named ref:
+    HEAD -> 8a3f12c... (commit)
+rather than:
+    HEAD -> refs/heads/main -> 8a3f12c...
+
+Worktrees support detached checkouts natively. You obtain an isolated
+directory fixed to an exact revision without polluting the reference
+namespace. When the review is complete, discard the directory.

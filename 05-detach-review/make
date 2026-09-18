@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+git init -q -b main "$d"
+cd "$d"
+git config user.name "who"
+git config user.email "who@example.net"
+git config commit.gpgsign false
+echo "v1" > ver.txt
+git add ver.txt
+git commit -qm "v1"
+git tag v1.0
+echo "v2" > ver.txt
+git commit -qam "v2"
