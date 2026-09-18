@@ -1,0 +1,8 @@
+In 'repo', lock worktree '../mount-tree' with the reason 'external'.
+Delete directory '../temp-tree' from disk.
+Prune orphaned worktree metadata.
+Unlock '../mount-tree'.
+Exit the subshell.
+
+Tidbit: 'git worktree lock --reason <msg>' guards an absent tree's metadata
+from 'git worktree prune'. 'git worktree unlock' clears the guard.

@@ -1,0 +1,13 @@
+Git registers linked worktrees under '.git/worktrees/<name>/'. Each entry
+holds the administrative state: the private index, HEAD, and path.
+
+Removing a worktree directory with 'rm -rf' leaves Git's administrative
+records behind as orphans. 'git worktree prune' scans the registered
+paths and deletes records whose directories have vanished.
+
+However, if a worktree resides on a removable flash drive or network
+filesystem, unmounting it makes the directory appear gone. An unguided
+prune would wipe its administrative state.
+
+Locking the worktree prevents prune from clearing its record while the
+filesystem is absent.

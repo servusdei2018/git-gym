@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+git init -q -b main "$d"
+cd "$d"
+git config user.name "who"
+git config user.email "who@example.net"
+git config commit.gpgsign false
+echo "int x;" > a.c
+git add a.c
+git commit -qm "init"
+
+git worktree add -q -b mount-branch "$1/mount-tree"
+git worktree add -q -b temp-branch "$1/temp-tree"

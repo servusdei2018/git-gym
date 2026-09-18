@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+d="$1/repo"
+
+# temp-tree directory must be gone
+if [ -d "$1/temp-tree" ]; then
+	echo "fail: directory 'temp-tree' was not deleted" >&2
+	exit 1
+fi
+
+# orphaned metadata must be pruned
+if [ -d "$d/.git/worktrees/temp-tree" ]; then
+	echo "fail: orphaned metadata for 'temp-tree' not pruned" >&2
+	exit 1
+fi
+
+# mount-tree must exist and be unlocked
+if [ ! -d "$1/mount-tree" ]; then
+	echo "fail: directory 'mount-tree' was removed" >&2
+	exit 1
+fi
+if git -C "$d" worktree list --porcelain | grep -q "^locked"; then
+	echo "fail: worktree 'mount-tree' is still locked" >&2
+	exit 1
+fi
+
+echo "ok"
